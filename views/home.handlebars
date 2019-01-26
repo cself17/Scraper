@@ -1,0 +1,67 @@
+<nav class="navbar navbar inverse">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/">Scraper</a>
+		</div>
+		<ul class="nav navbar-nav">
+			<li class="active"><a href="/">Home</a></li>
+			<li><a href="/saved"></a>Saved Articles</li>
+			{{!-- <li><a class="btn btn-danger scrape-new"></a>Scrape new articles</li> --}}
+			<li><button class="btn btn-danger scrape-new" id="scrapeButton">Scrape new articles</button></li>
+		</ul>
+	</div>
+</nav>
+<div class="jumbotron text-center">
+	<div class="overlay">
+	</div>
+	<div class="background-image">
+	</div>
+	<div class="caption">
+		<h1>Mongo Scraper</h1>
+		<p>New York Times Edition</p>
+	</div>
+</div>
+<div class="container-fluid article-container">
+</div>
+
+<footer class="footer">
+	<div class="container">
+		<p>New York Times Mongo Scraper</p>
+	</div>
+</footer>
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+<scirpt src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.mon.js"></scirpt>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script>
+$(() => {
+	$('#scrapeButton').on('click', () => {
+		$.ajax({
+			url: '/scrape',
+			type: 'GET'
+		})
+			.done(data => {
+				console.log('data', data);
+				var output = $(".article-container")
+				for (var i = 0; i < data.length; i++ ) {
+					var article = $("<div>")
+					var title = $("<h2>").text(data[i].headline)
+					var link = $("<a>").attr("href", data[i].link).text("View Article")
+					var summary = $("<p>").text(data[i].summary)
+					article
+						.append(title)
+						.append(link)
+						.append(summary)
+					output.append(article)
+				}
+			})
+	})
+})
+</script>
